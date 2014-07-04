@@ -1,0 +1,16 @@
+var TR = function () {};
+
+TR('hello');
+TR('hello' + dude);
+TR('hello' +
+        dude);
+TR("Hey 'dude'");
+TR('hello ' + my + ' best' + "friend.");
+TR('hello ' + my +
+    ' best' +
+    "friend.");
+TR('some value', 'core.FOO');
+TR('foo' + (( true === true ? 'dogs' : 333)) + 'what the heck?');
+TR('foo' +
+    (( true === true ? 'dogs' : 333)) +
+    'what the heck?');
