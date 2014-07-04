@@ -12,13 +12,17 @@ var lastIndex = 0;
 
 var matches = [];
 
+var escapeRegExp = function (string) {
+    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+};
+
 var TR = function (rawArguments) {
     this.parse(rawArguments);
 };
 
 TR.prototype.parse = function (rawArguments) {
     this.parseSymbol(rawArguments);
-    // this.value = this.getValue(rawArguments);
+    this.value = this.getValue(rawArguments);
 };
 
 TR.prototype.parseSymbol = function (rawArguments) {
@@ -26,13 +30,26 @@ TR.prototype.parseSymbol = function (rawArguments) {
     var symbol = rawArguments.match(regex);
 
     if (symbol) {
+        this.fullSymbol = symbol[0];
         this.context = symbol[1];
         this.symbol = symbol[2];
     }
 };
 
-TR.prototype.getContext = function (symbol) {
-    var regex = /['"].+\./;
+TR.prototype.getValue = function (rawArguments) {
+    var value,
+        escapedFullSymbol,
+        symbolRegex;
+
+    if (this.fullSymbol) {
+        escapedFullSymbol = escapeRegExp(this.fullSymbol);
+        symbolRegex = new RegExp(',\\s+' + escapedFullSymbol + '$');
+        value = rawArguments.replace(symbolRegex, '');
+    } else {
+        value = rawArguments;
+    }
+
+    return value;
 };
 
 /**
