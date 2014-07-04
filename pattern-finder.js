@@ -34,20 +34,28 @@ var assert = function (actual, expected) {
 };
 
 
+var MATCHES = {
+    '<': '>',
+    '(': ')',
+    '{': '}',
+    '[': ']'
+};
 
 /**
 * Finds the index of the matching closing character.
 * @param {String} text the first char is used as the "opening" character
-* @param {String} closingChar the string that is the "closing" character
+* @param {String} [closingChar] the string that is the "closing" character,
+* if not the same as the "opening" character
 * @return {Number}
 */
-var findClosingCharIndex = function (text, closingChar) {
+var findMatching = function (text, closingChar) {
     var closeIndex,
         currentIndex = 1,
         currentChar,
         innerClosingIndex;
 
     var openingChar = text.charAt(0);
+    closingChar = closingChar || MATCHES[openingChar] || openingChar;
 
     while (currentIndex < text.length && closeIndex === undefined) {
         currentChar = text.charAt(currentIndex);
@@ -62,7 +70,7 @@ var findClosingCharIndex = function (text, closingChar) {
                 closeIndex = currentIndex;
                 break;
             case openingChar:
-                innerClosingIndex = findClosingCharIndex(text.substr(currentIndex), closingChar);
+                innerClosingIndex = findMatching(text.substr(currentIndex), closingChar);
                 if (innerClosingIndex) {
                     currentIndex += innerClosingIndex;
                 }
@@ -75,31 +83,20 @@ var findClosingCharIndex = function (text, closingChar) {
     return closeIndex;
 };
 
-var findMatchingParen = function (text) {
-    return findClosingCharIndex(text, ')');
-};
+assert(findMatching('(asdf)'), 5);
+assert(findMatching('(asdf'), undefined);
+assert(findMatching('(a(sd)f))'), 7);
+assert(findMatching('(a(sd)(f))'), 9);
+assert(findMatching('(a(sd)(f)'), undefined);
 
-var findMatching = function (character, text) {
-    return findClosingCharIndex(text, character);
-};
+assert(findMatching("'asdf"), undefined);
+assert(findMatching("'asdf'"), 5);
+assert(findMatching("'as''df'"), 3);
+assert(findMatching(""), undefined);
 
-var findMatchingQuote = function (text) {
-    return findClosingCharIndex(text, "'");
-};
+assert(findMatching('""'), 1);
+assert(findMatching('"asdf"'), 5);
+assert(findMatching('"as"df"'), 3);
 
-assert(findMatchingParen('(asdf)'), 5);
-assert(findMatchingParen('(asdf'), undefined);
-assert(findMatchingParen('(a(sd)f))'), 7);
-assert(findMatchingParen('(a(sd)(f))'), 9);
-assert(findMatchingParen('(a(sd)(f)'), undefined);
-
-assert(findMatching("'", "'asdf"), undefined);
-assert(findMatching("'", "'asdf'"), 5);
-assert(findMatching("'", "'as''df'"), 3);
-assert(findMatching("'", ""), undefined);
-
-assert(findMatching('"', '""'), 1);
-assert(findMatching('"', '"asdf"'), 5);
-assert(findMatching('"', '"as"df"'), 3);
-
-assert(findMatchingParen('(as\\)df)'), 7);
+assert(findMatching('(as\\)df)'), 7);
+assert(findMatching('<div id="dude">'), 14);
