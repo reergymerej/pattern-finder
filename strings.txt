@@ -1,9 +1,11 @@
 var TR = function () {};
 
 TR('hello');
+    TR('What the heck?', 'dude.MESSAGE');
+
 TR('hello' + dude);
 TR('hello' +
-        dude);
+        adude);
 TR("Hey 'dude'");
 TR('hello ' + my + ' best' + "friend.");
 TR('hello ' + my +
@@ -14,3 +16,13 @@ TR('foo' + (( true === true ? 'dogs' : 333)) + 'what the heck?');
 TR('foo' +
     (( true === true ? 'dogs' : 333)) +
     'what the heck?');
+
+    TR("This 'thing' is \"cool\", right " +
+            userName +
+        '?');
+
+
+    TR("This 'thing' is \"cool\", right " +
+            userName +
+        '?', 
+'core."WOAH_LOOKSLIKE\'W3 have A SYmB- + l, too!');

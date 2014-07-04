@@ -40,8 +40,10 @@ var findMatching = function (text, closingChar, ignoreQuoted) {
                 innerClosingIndex = findMatching(text.substr(currentIndex), currentChar, ignoreQuoted);
                 if (innerClosingIndex) {
                     // skip the inner pair
-                    currentIndex += innerClosingIndex + 1;
+                    currentIndex += innerClosingIndex;
                 }
+
+                currentIndex++;
         
         } else {
 
@@ -61,9 +63,9 @@ var findMatching = function (text, closingChar, ignoreQuoted) {
                     innerClosingIndex = findMatching(text.substr(currentIndex), closingChar, ignoreQuoted);
                     if (innerClosingIndex) {
                         // skip the inner pair
-                        currentIndex += innerClosingIndex + 1;
+                        currentIndex += innerClosingIndex;
                     }
-                    break;
+                    /* falls through */
                 default:
                     currentIndex++;
             }
@@ -100,5 +102,8 @@ assert(findMatching('<div id="dude">'), 14);
 
 assert(findMatching('(asdf + ")" + qwer)'), 18);
 assert(findMatching('(asdf + ")" + (blah) ? ding : qwer)'), 34);
+
+// unpaired quotes in substring
+assert(findMatching('("\')', 3));
 
 exports.findMatching = findMatching;
