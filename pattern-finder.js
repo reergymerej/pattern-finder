@@ -75,35 +75,35 @@ var findMatching = function (text, closingChar, ignoreQuoted) {
     return closeIndex;
 };
 
-var assert = function (actual, expected) {
-    if (actual !== expected) {
-        throw new Error('expected ' + expected + ' and got '+ actual);
-    }
-};
+// var assert = function (actual, expected) {
+//     if (actual !== expected) {
+//         throw new Error('expected ' + expected + ' and got '+ actual);
+//     }
+// };
 
-assert(findMatching('(asdf)'), 5);
-assert(findMatching('(asdf'), undefined);
-assert(findMatching('(a(sd)f))'), 7);
-assert(findMatching('(a(sd)(f))'), 9);
-assert(findMatching('(a(sd)(f)'), undefined);
+// assert(findMatching('(asdf)'), 5);
+// assert(findMatching('(asdf'), undefined);
+// assert(findMatching('(a(sd)f))'), 7);
+// assert(findMatching('(a(sd)(f))'), 9);
+// assert(findMatching('(a(sd)(f)'), undefined);
 
-assert(findMatching("'asdf"), undefined);
-assert(findMatching("'asdf'"), 5);
-assert(findMatching("'as''df'"), 3);
-assert(findMatching(""), undefined);
+// assert(findMatching("'asdf"), undefined);
+// assert(findMatching("'asdf'"), 5);
+// assert(findMatching("'as''df'"), 3);
+// assert(findMatching(""), undefined);
 
-assert(findMatching('""'), 1);
-assert(findMatching('"\\""'), 3);
-assert(findMatching('"asdf"'), 5);
-assert(findMatching('"as"df"'), 3);
+// assert(findMatching('""'), 1);
+// assert(findMatching('"\\""'), 3);
+// assert(findMatching('"asdf"'), 5);
+// assert(findMatching('"as"df"'), 3);
 
-assert(findMatching('(as\\)df)'), 7);
-assert(findMatching('<div id="dude">'), 14);
+// assert(findMatching('(as\\)df)'), 7);
+// assert(findMatching('<div id="dude">'), 14);
 
-assert(findMatching('(asdf + ")" + qwer)'), 18);
-assert(findMatching('(asdf + ")" + (blah) ? ding : qwer)'), 34);
+// assert(findMatching('(asdf + ")" + qwer)'), 18);
+// assert(findMatching('(asdf + ")" + (blah) ? ding : qwer)'), 34);
 
-// unpaired quotes in substring
-assert(findMatching('("\')', 3));
+// // unpaired quotes in substring
+// assert(findMatching('("\')', 3));
 
 exports.findMatching = findMatching;

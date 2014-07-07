@@ -10,8 +10,6 @@ var text = fs.readFileSync(file, 'utf-8');
 var trRegex = /\sTR\(/;
 var lastIndex = 0;
 
-var matches = [];
-
 var escapeRegExp = function (string) {
     return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 };
@@ -66,7 +64,8 @@ var findTR = function (text) {
 
     startIndex = text.search(trRegex);
 
-    if (startIndex !== undefined) {
+    if (startIndex !== -1) {
+
         // move up to the (
         startIndex += 3;
         
@@ -86,12 +85,22 @@ var findTR = function (text) {
     return tr;
 };
 
-var tr = findTR(text);
-var x = 50;
-while (x && tr) {
-    x--;
-    matches.push(tr);
-    tr = findTR(text);
-}
+var findAllTRsInText = function (text) {
+    var tr;
+    var x = 500;
+    var matches = [];
+    lastIndex = 0;
 
-console.log(matches);
+    tr = findTR(text);
+    while (x && tr) {
+        x--;
+
+        matches.push(tr);
+
+        tr = findTR(text);
+    }
+
+    return matches;
+};
+
+exports.findAllTRsInText = findAllTRsInText;
